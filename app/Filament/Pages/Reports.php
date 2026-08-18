@@ -4,10 +4,17 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\CompanyPerformanceTable;
 use App\Filament\Widgets\EmployeePerformanceTable;
+use App\Models\InsuranceCompany;
+use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Pages\Page;
 
-class Reports extends Page
+class Reports extends Page implements HasActions
 {
+    use InteractsWithActions;
+
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
     protected static ?string $navigationGroup = 'الإعدادات';
@@ -25,6 +32,38 @@ class Reports extends Page
         return [
             CompanyPerformanceTable::class,
             EmployeePerformanceTable::class,
+        ];
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('exportPdf')
+                ->label('تصدير التقرير PDF')
+                ->icon('heroicon-o-document-arrow-down')
+                ->action(function () {
+                    $companies = InsuranceCompany::query()
+                        ->withCount('policies')
+                        ->withSum('policies as premiums_sum', 'premium_amount')
+                        ->withSum('policies as commissions_sum', 'net_office_commission')
+                        ->orderByDesc('commissions_sum')
+                        ->get();
+
+                    $employees = User::query()
+                        ->withCount('assignedClients')
+                        ->withCount('responsiblePolicies')
+                        ->withSum('responsiblePolicies as commissions_sum', 'net_office_commission')
+                        ->orderByDesc('commissions_sum')
+                        ->get();
+
+                    return response()->streamDownload(
+                        fn () => print (\Pdf::loadView('pdf.performance-report', [
+                            'companies' => $companies,
+                            'employees' => $employees,
+                        ])->output()),
+                        'تقرير-الأداء-'.now()->format('Y-m-d').'.pdf'
+                    );
+                }),
         ];
     }
 

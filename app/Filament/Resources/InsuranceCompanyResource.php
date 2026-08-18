@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\InsuranceCompanyResource\Pages;
+use App\Filament\Resources\InsuranceCompanyResource\RelationManagers;
 use App\Models\InsuranceCompany;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -109,6 +110,13 @@ class InsuranceCompanyResource extends Resource
                 ]),
             ])
             ->defaultSort('name');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PoliciesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

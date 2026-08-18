@@ -158,8 +158,22 @@ class PolicyResource extends Resource
         return $table
             ->headerActions([
                 Tables\Actions\ExportAction::make()
-                    ->label('تصدير')
+                    ->label('تصدير Excel')
                     ->exporter(PolicyExporter::class),
+                Tables\Actions\Action::make('exportPdf')
+                    ->label('تصدير PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('gray')
+                    ->action(function ($livewire) {
+                        $policies = $livewire->getFilteredTableQuery()
+                            ->with(['client', 'insuranceCompany'])
+                            ->get();
+
+                        return response()->streamDownload(
+                            fn () => print (\Pdf::loadView('pdf.policies-report', ['policies' => $policies])->output()),
+                            'تقرير-وثائق-التأمين-'.now()->format('Y-m-d').'.pdf'
+                        );
+                    }),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
