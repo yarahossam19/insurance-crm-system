@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PolicyStatus;
 use App\Enums\PolicyType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +17,7 @@ use Spatie\Activitylog\Support\LogOptions;
 
 class Policy extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'client_id',
@@ -31,6 +32,7 @@ class Policy extends Model
         'employee_commission_amount',
         'net_office_commission',
         'status',
+        'last_notified_tier',
         'responsible_user_id',
         'documents',
         'notes',
@@ -50,6 +52,25 @@ class Policy extends Model
             'net_office_commission' => 'decimal:2',
             'documents' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // Commission math is the source of truth at the model level, not just
+        // the Filament form's live preview — so it's always correct regardless
+        // of whether the record came from the UI, an import, or a script.
+        static::saving(function (Policy $policy): void {
+            $commissionAmount = round(
+                (float) $policy->premium_amount * (float) $policy->commission_rate / 100,
+                2
+            );
+
+            $policy->commission_amount = $commissionAmount;
+            $policy->net_office_commission = round(
+                $commissionAmount - (float) $policy->employee_commission_amount,
+                2
+            );
+        });
     }
 
     public function client(): BelongsTo

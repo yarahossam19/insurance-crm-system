@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('عبدالله الشباسي للتأمين')
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.svg'))
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->colors([
                 'primary' => Color::hex('#3C9284'),
                 'danger' => Color::Rose,

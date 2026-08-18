@@ -13,3 +13,6 @@ Artisan::command('inspire', function () {
 Schedule::command('backup:run')->dailyAt('02:00');
 Schedule::command('backup:clean')->dailyAt('02:30');
 Schedule::command('backup:monitor')->monthlyOn(1, '03:00');
+
+// Morning renewal-tier notifications for the responsible employee + managers.
+Schedule::command('renewals:notify')->dailyAt('08:00');
