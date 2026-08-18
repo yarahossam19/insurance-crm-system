@@ -23,6 +23,7 @@ class RolePermissionSeeder extends Seeder
                 'view_any_activity::log', 'view_activity::log',
                 'page_Pipeline', 'page_Reports',
                 'widget_DashboardStats', 'widget_RenewalStatsOverview', 'widget_UpcomingRenewalsTable',
+                'widget_RevenueTrendChart', 'widget_PolicyTypeChart', 'widget_PipelineFunnelChart',
                 'widget_CompanyPerformanceTable', 'widget_EmployeePerformanceTable',
             ],
             'Sales' => [
@@ -33,6 +34,7 @@ class RolePermissionSeeder extends Seeder
                 'view_any_insurance::company', 'view_insurance::company',
                 'page_Pipeline',
                 'widget_DashboardStats', 'widget_RenewalStatsOverview', 'widget_UpcomingRenewalsTable',
+                'widget_PolicyTypeChart', 'widget_PipelineFunnelChart',
             ],
             'Customer Service' => [
                 'view_any_client', 'view_client', 'update_client',
@@ -40,7 +42,7 @@ class RolePermissionSeeder extends Seeder
                 'view_any_quotation', 'view_quotation',
                 'view_any_claim', 'view_claim', 'create_claim', 'update_claim',
                 'page_Pipeline',
-                'widget_UpcomingRenewalsTable',
+                'widget_UpcomingRenewalsTable', 'widget_PipelineFunnelChart',
             ],
             'Accounting' => [
                 'view_any_client', 'view_client',
@@ -48,7 +50,8 @@ class RolePermissionSeeder extends Seeder
                 'view_any_insurance::company', 'view_insurance::company',
                 'view_any_activity::log', 'view_activity::log',
                 'page_Reports',
-                'widget_DashboardStats', 'widget_CompanyPerformanceTable', 'widget_EmployeePerformanceTable',
+                'widget_DashboardStats', 'widget_RevenueTrendChart', 'widget_PolicyTypeChart',
+                'widget_CompanyPerformanceTable', 'widget_EmployeePerformanceTable',
             ],
         ];
 

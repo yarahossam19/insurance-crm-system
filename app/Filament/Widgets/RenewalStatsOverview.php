@@ -12,7 +12,7 @@ class RenewalStatsOverview extends BaseWidget
 
     protected static bool $isLazy = false;
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 5;
 
     protected function getStats(): array
     {
