@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\PolicyStatus;
 use App\Enums\PolicyType;
+use App\Filament\Exports\PolicyExporter;
 use App\Filament\Resources\PolicyResource\Pages;
 use App\Filament\Resources\PolicyResource\RelationManagers;
 use App\Models\Policy;
@@ -155,6 +156,11 @@ class PolicyResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->label('تصدير')
+                    ->exporter(PolicyExporter::class),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
                     ->label('رقم الوثيقة')

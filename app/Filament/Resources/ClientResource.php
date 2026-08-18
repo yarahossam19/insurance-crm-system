@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\ClientType;
 use App\Enums\PipelineStage;
+use App\Filament\Exports\ClientExporter;
+use App\Filament\Imports\ClientImporter;
 use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Client;
@@ -105,6 +107,14 @@ class ClientResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\ImportAction::make()
+                    ->label('استيراد من Excel')
+                    ->importer(ClientImporter::class),
+                Tables\Actions\ExportAction::make()
+                    ->label('تصدير')
+                    ->exporter(ClientExporter::class),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('الاسم')
@@ -163,6 +173,7 @@ class ClientResource extends Resource
     {
         return [
             RelationManagers\FollowUpsRelationManager::class,
+            RelationManagers\QuotationsRelationManager::class,
             RelationManagers\PoliciesRelationManager::class,
         ];
     }
