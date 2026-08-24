@@ -17,38 +17,38 @@ class ViewActivityLog extends ViewRecord
     {
         return $infolist
             ->schema([
-                Section::make('تفاصيل العملية')
+                Section::make(__('تفاصيل العملية'))
                     ->columns(2)
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('الوقت')
+                            ->label(__('الوقت'))
                             ->dateTime('Y-m-d H:i:s'),
                         TextEntry::make('causer.name')
-                            ->label('بواسطة')
-                            ->default('النظام'),
+                            ->label(__('بواسطة'))
+                            ->default(__('النظام')),
                         TextEntry::make('event')
-                            ->label('العملية')
+                            ->label(__('العملية'))
                             ->formatStateUsing(fn (?string $state) => match ($state) {
-                                'created' => 'إضافة',
-                                'updated' => 'تعديل',
-                                'deleted' => 'حذف',
+                                'created' => __('إضافة'),
+                                'updated' => __('تعديل'),
+                                'deleted' => __('حذف'),
                                 default => $state ?? '—',
                             })
                             ->badge(),
                         TextEntry::make('subject_type')
-                            ->label('النوع')
+                            ->label(__('النوع'))
                             ->formatStateUsing(fn (?string $state) => $state ? class_basename($state) : '—'),
                         TextEntry::make('description')
-                            ->label('الوصف')
+                            ->label(__('الوصف'))
                             ->columnSpanFull(),
                     ]),
-                Section::make('القيم قبل وبعد التعديل')
+                Section::make(__('القيم قبل وبعد التعديل'))
                     ->schema([
                         KeyValueEntry::make('properties.old')
-                            ->label('قبل')
+                            ->label(__('قبل'))
                             ->visible(fn ($record) => filled($record->properties['old'] ?? null)),
                         KeyValueEntry::make('properties.attributes')
-                            ->label('بعد')
+                            ->label(__('بعد'))
                             ->visible(fn ($record) => filled($record->properties['attributes'] ?? null)),
                     ])
                     ->columns(2)

@@ -14,25 +14,25 @@ class ClientExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('name')->label('الاسم'),
-            ExportColumn::make('type')->label('النوع'),
-            ExportColumn::make('phone')->label('التليفون'),
-            ExportColumn::make('email')->label('البريد الإلكتروني'),
-            ExportColumn::make('national_id')->label('الرقم القومي'),
-            ExportColumn::make('commercial_register')->label('السجل التجاري'),
-            ExportColumn::make('pipeline_stage')->label('مرحلة المتابعة'),
-            ExportColumn::make('assignedUser.name')->label('الموظف المسؤول'),
-            ExportColumn::make('address')->label('العنوان'),
-            ExportColumn::make('created_at')->label('تاريخ الإضافة'),
+            ExportColumn::make('name')->label(__('الاسم')),
+            ExportColumn::make('type')->label(__('النوع')),
+            ExportColumn::make('phone')->label(__('التليفون')),
+            ExportColumn::make('email')->label(__('البريد الإلكتروني')),
+            ExportColumn::make('national_id')->label(__('الرقم القومي')),
+            ExportColumn::make('commercial_register')->label(__('السجل التجاري')),
+            ExportColumn::make('pipeline_stage')->label(__('مرحلة المتابعة')),
+            ExportColumn::make('assignedUser.name')->label(__('الموظف المسؤول')),
+            ExportColumn::make('address')->label(__('العنوان')),
+            ExportColumn::make('created_at')->label(__('تاريخ الإضافة')),
         ];
     }
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'تم تصدير '.number_format($export->successful_rows).' سجل بنجاح.';
+        $body = __('تم تصدير ').number_format($export->successful_rows).__(' سجل بنجاح.');
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' فشل تصدير '.number_format($failedRowsCount).' سجل.';
+            $body .= __(' فشل تصدير ').number_format($failedRowsCount).__(' سجل.');
         }
 
         return $body;

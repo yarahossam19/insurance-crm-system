@@ -2,6 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\CollectionsReportTable;
+use App\Filament\Widgets\CommissionsReportTable;
 use App\Filament\Widgets\CompanyPerformanceTable;
 use App\Filament\Widgets\EmployeePerformanceTable;
 use App\Models\InsuranceCompany;
@@ -32,6 +34,8 @@ class Reports extends Page implements HasActions
         return [
             CompanyPerformanceTable::class,
             EmployeePerformanceTable::class,
+            CommissionsReportTable::class,
+            CollectionsReportTable::class,
         ];
     }
 
@@ -39,7 +43,7 @@ class Reports extends Page implements HasActions
     {
         return [
             Action::make('exportPdf')
-                ->label('تصدير التقرير PDF')
+                ->label(__('تصدير التقرير PDF'))
                 ->icon('heroicon-o-document-arrow-down')
                 ->action(function () {
                     $companies = InsuranceCompany::query()
@@ -61,7 +65,7 @@ class Reports extends Page implements HasActions
                             'companies' => $companies,
                             'employees' => $employees,
                         ])->output()),
-                        'تقرير-الأداء-'.now()->format('Y-m-d').'.pdf'
+                        __('تقرير-الأداء-').now()->format('Y-m-d').'.pdf'
                     );
                 }),
         ];
@@ -72,41 +76,56 @@ class Reports extends Page implements HasActions
     {
         return [
             [
-                'label' => 'التجديدات القادمة',
-                'description' => 'الوثائق المحتاجة متابعة تجديد خلال 30 يوم',
+                'label' => __('التجديدات القادمة'),
+                'description' => __('الوثائق المحتاجة متابعة تجديد خلال 30 يوم'),
                 'icon' => 'heroicon-o-arrow-path',
                 'url' => route('filament.admin.resources.policies.index', ['tableFilters[expiring_soon][isActive]' => 1]),
             ],
             [
-                'label' => 'الوثائق المنتهية',
-                'description' => 'وثائق منتهية بدون تجديد',
+                'label' => __('الوثائق المنتهية'),
+                'description' => __('وثائق منتهية بدون تجديد'),
                 'icon' => 'heroicon-o-exclamation-triangle',
                 'url' => route('filament.admin.resources.policies.index', ['tableFilters[expired][isActive]' => 1]),
             ],
             [
-                'label' => 'كل العملاء',
-                'description' => 'قائمة العملاء كاملة (قابلة للتصدير)',
+                'label' => __('كل العملاء'),
+                'description' => __('قائمة العملاء كاملة (قابلة للتصدير)'),
                 'icon' => 'heroicon-o-users',
                 'url' => route('filament.admin.resources.clients.index'),
             ],
             [
-                'label' => 'كل وثائق التأمين',
-                'description' => 'قائمة الوثائق كاملة (قابلة للتصدير)',
+                'label' => __('كل وثائق التأمين'),
+                'description' => __('قائمة الوثائق كاملة (قابلة للتصدير)'),
                 'icon' => 'heroicon-o-document-text',
                 'url' => route('filament.admin.resources.policies.index'),
             ],
             [
-                'label' => 'المطالبات المفتوحة',
-                'description' => 'مطالبات لسه محتاجة متابعة',
+                'label' => __('المطالبات المفتوحة'),
+                'description' => __('مطالبات لسه محتاجة متابعة'),
                 'icon' => 'heroicon-o-shield-exclamation',
                 'url' => route('filament.admin.resources.claims.index'),
             ],
             [
-                'label' => 'عروض الأسعار',
-                'description' => 'كل عروض الأسعار المرسلة للعملاء',
+                'label' => __('عروض الأسعار'),
+                'description' => __('كل عروض الأسعار المرسلة للعملاء'),
                 'icon' => 'heroicon-o-document-currency-dollar',
                 'url' => route('filament.admin.resources.quotations.index'),
             ],
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('الإعدادات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('مركز التقارير');
+    }
+
+    public function getTitle(): string
+    {
+        return __('مركز التقارير');
     }
 }

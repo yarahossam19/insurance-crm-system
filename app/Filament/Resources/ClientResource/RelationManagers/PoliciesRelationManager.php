@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PoliciesRelationManager extends RelationManager
 {
@@ -23,38 +24,38 @@ class PoliciesRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('insurance_company_id')
-                    ->label('شركة التأمين')
+                    ->label(__('شركة التأمين'))
                     ->relationship('insuranceCompany', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('type')
-                    ->label('نوع التأمين')
+                    ->label(__('نوع التأمين'))
                     ->options(PolicyType::class)
                     ->default(PolicyType::Motor)
                     ->required(),
                 Forms\Components\TextInput::make('policy_number')
-                    ->label('رقم الوثيقة')
+                    ->label(__('رقم الوثيقة'))
                     ->required()
                     ->unique(ignoreRecord: true),
                 Forms\Components\DatePicker::make('start_date')
-                    ->label('تاريخ البداية')
+                    ->label(__('تاريخ البداية'))
                     ->required()
                     ->default(now()),
                 Forms\Components\DatePicker::make('end_date')
-                    ->label('تاريخ النهاية')
+                    ->label(__('تاريخ النهاية'))
                     ->required()
                     ->default(now()->addYear()),
                 Forms\Components\TextInput::make('premium_amount')
-                    ->label('القسط (ج.م)')
+                    ->label(__('القسط (ج.م)'))
                     ->numeric()
                     ->required(),
                 Forms\Components\TextInput::make('commission_rate')
-                    ->label('نسبة العمولة (%)')
+                    ->label(__('نسبة العمولة (%)'))
                     ->numeric()
                     ->required(),
                 Forms\Components\Select::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(PolicyStatus::class)
                     ->default(PolicyStatus::Active)
                     ->required(),
@@ -67,28 +68,28 @@ class PoliciesRelationManager extends RelationManager
             ->recordTitleAttribute('policy_number')
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
-                    ->label('رقم الوثيقة')
+                    ->label(__('رقم الوثيقة'))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('insuranceCompany.name')
-                    ->label('شركة التأمين'),
+                    ->label(__('شركة التأمين')),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('تاريخ الانتهاء'))
                     ->date('Y-m-d'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('premium_amount')
-                    ->label('القسط')
+                    ->label(__('القسط'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م'),
+                    ->suffix(__(' ج.م')),
             ])
             ->defaultSort('end_date')
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('إضافة وثيقة'),
+                    ->label(__('إضافة وثيقة')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -99,5 +100,15 @@ class PoliciesRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('وثائق التأمين');
+    }
+
+    protected static function getModelLabel(): ?string
+    {
+        return __('وثيقة');
     }
 }

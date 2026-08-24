@@ -33,7 +33,7 @@ class PipelineFunnelChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'عدد العملاء',
+                    'label' => __('عدد العملاء'),
                     'data' => $values,
                     'backgroundColor' => '#3C9284',
                 ],
@@ -55,5 +55,10 @@ class PipelineFunnelChart extends ChartWidget
                 'x' => ['ticks' => ['stepSize' => 1]],
             ],
         ];
+    }
+
+    public function getHeading(): string
+    {
+        return __('توزيع العملاء على مسار المتابعة');
     }
 }

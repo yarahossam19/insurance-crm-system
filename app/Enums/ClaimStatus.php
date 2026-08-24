@@ -16,11 +16,11 @@ enum ClaimStatus: string implements HasColor, HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Reported => 'مُبلّغ عنها',
-            self::UnderReview => 'قيد المراجعة',
-            self::Approved => 'موافَق عليها',
-            self::Rejected => 'مرفوضة',
-            self::Settled => 'مسوّاة',
+            self::Reported => __('مُبلّغ عنها'),
+            self::UnderReview => __('قيد المراجعة'),
+            self::Approved => __('موافَق عليها'),
+            self::Rejected => __('مرفوضة'),
+            self::Settled => __('مسوّاة'),
         };
     }
 

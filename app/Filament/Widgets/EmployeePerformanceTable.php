@@ -26,24 +26,29 @@ class EmployeePerformanceTable extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('الموظف')
+                    ->label(__('الموظف'))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('assigned_clients_count')
-                    ->label('عدد العملاء')
+                    ->label(__('عدد العملاء'))
                     ->badge()
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('responsible_policies_count')
-                    ->label('عدد الوثائق')
+                    ->label(__('عدد الوثائق'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('commissions_sum')
-                    ->label('إجمالي العمولات المحقّقة')
+                    ->label(__('إجمالي العمولات المحقّقة'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->default(0)
                     ->weight('bold')
                     ->color('primary'),
             ])
             ->defaultSort('commissions_sum', 'desc')
             ->paginated(false);
+    }
+
+    protected function getTableHeading(): string
+    {
+        return __('أداء الموظفين');
     }
 }

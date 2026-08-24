@@ -8,6 +8,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class FollowUpsRelationManager extends RelationManager
 {
@@ -22,13 +23,13 @@ class FollowUpsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Textarea::make('note')
-                    ->label('ملاحظة المتابعة')
+                    ->label(__('ملاحظة المتابعة'))
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('result')
-                    ->label('نتيجة الاتصال'),
+                    ->label(__('نتيجة الاتصال')),
                 Forms\Components\DateTimePicker::make('next_follow_up_at')
-                    ->label('موعد المتابعة القادمة'),
+                    ->label(__('موعد المتابعة القادمة')),
             ]);
     }
 
@@ -38,27 +39,27 @@ class FollowUpsRelationManager extends RelationManager
             ->recordTitleAttribute('note')
             ->columns([
                 Tables\Columns\TextColumn::make('note')
-                    ->label('الملاحظة')
+                    ->label(__('الملاحظة'))
                     ->wrap()
                     ->limit(80),
                 Tables\Columns\TextColumn::make('result')
-                    ->label('النتيجة')
+                    ->label(__('النتيجة'))
                     ->badge()
                     ->default('—'),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('بواسطة'),
+                    ->label(__('بواسطة')),
                 Tables\Columns\TextColumn::make('next_follow_up_at')
-                    ->label('المتابعة القادمة')
+                    ->label(__('المتابعة القادمة'))
                     ->dateTime('Y-m-d H:i')
                     ->color(fn ($state) => $state && $state->isPast() ? 'danger' : 'success'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإضافة')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime('Y-m-d H:i'),
             ])
             ->defaultSort('created_at', 'desc')
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('إضافة متابعة')
+                    ->label(__('إضافة متابعة'))
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['user_id'] = Auth::id();
 
@@ -74,5 +75,15 @@ class FollowUpsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('سجل المتابعات');
+    }
+
+    protected static function getModelLabel(): ?string
+    {
+        return __('متابعة');
     }
 }

@@ -40,11 +40,11 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('نوع العميل والبيانات الأساسية')
+                Forms\Components\Section::make(__('نوع العميل والبيانات الأساسية'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Radio::make('type')
-                            ->label('نوع العميل')
+                            ->label(__('نوع العميل'))
                             ->options(ClientType::class)
                             ->default(ClientType::Individual)
                             ->inline()
@@ -52,53 +52,53 @@ class ClientResource extends Resource
                             ->required()
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('name')
-                            ->label(fn (Forms\Get $get) => $get('type') === ClientType::Company->value ? 'اسم الشركة' : 'الاسم بالكامل')
+                            ->label(fn (Forms\Get $get) => $get('type') === ClientType::Company->value ? __('اسم الشركة') : __('الاسم بالكامل'))
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('phone')
-                            ->label('رقم التليفون')
+                            ->label(__('رقم التليفون'))
                             ->tel(),
                         Forms\Components\TextInput::make('email')
-                            ->label('البريد الإلكتروني')
+                            ->label(__('البريد الإلكتروني'))
                             ->email(),
                         Forms\Components\TextInput::make('national_id')
-                            ->label('الرقم القومي')
+                            ->label(__('الرقم القومي'))
                             ->visible(fn (Forms\Get $get) => $get('type') === ClientType::Individual->value),
                         Forms\Components\TextInput::make('commercial_register')
-                            ->label('السجل التجاري')
+                            ->label(__('السجل التجاري'))
                             ->visible(fn (Forms\Get $get) => $get('type') === ClientType::Company->value),
                         Forms\Components\Textarea::make('address')
-                            ->label('العنوان')
+                            ->label(__('العنوان'))
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('المتابعة والمسؤول')
+                Forms\Components\Section::make(__('المتابعة والمسؤول'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Select::make('pipeline_stage')
-                            ->label('مرحلة المتابعة (Pipeline)')
+                            ->label(__('مرحلة المتابعة (Pipeline)'))
                             ->options(PipelineStage::class)
                             ->default(PipelineStage::NewLead)
                             ->required(),
                         Forms\Components\Select::make('assigned_to')
-                            ->label('الموظف المسؤول')
+                            ->label(__('الموظف المسؤول'))
                             ->relationship('assignedUser', 'name')
                             ->searchable()
                             ->preload(),
                     ]),
 
-                Forms\Components\Section::make('المستندات والملاحظات')
+                Forms\Components\Section::make(__('المستندات والملاحظات'))
                     ->schema([
                         Forms\Components\FileUpload::make('documents')
-                            ->label('المستندات (PDF / صور)')
+                            ->label(__('المستندات (PDF / صور)'))
                             ->multiple()
                             ->directory('clients')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->reorderable()
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات عامة')
+                            ->label(__('ملاحظات عامة'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -109,52 +109,67 @@ class ClientResource extends Resource
         return $table
             ->headerActions([
                 Tables\Actions\ImportAction::make()
-                    ->label('استيراد من Excel')
+                    ->label(__('استيراد من Excel'))
                     ->importer(ClientImporter::class),
                 Tables\Actions\ExportAction::make()
-                    ->label('تصدير')
+                    ->label(__('تصدير'))
                     ->exporter(ClientExporter::class),
+                Tables\Actions\Action::make('exportPdf')
+                    ->label(__('تصدير PDF'))
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('gray')
+                    ->action(function ($livewire) {
+                        $clients = $livewire->getFilteredTableQuery()
+                            ->withCount('policies')
+                            ->with('assignedUser')
+                            ->get();
+
+                        return response()->streamDownload(
+                            fn () => print (\Pdf::loadView('pdf.clients-report', ['clients' => $clients])->output()),
+                            __('تقرير-العملاء-').now()->format('Y-m-d').'.pdf'
+                        );
+                    }),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('الاسم')
+                    ->label(__('الاسم'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->description(fn (Client $record) => $record->phone),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('pipeline_stage')
-                    ->label('المرحلة')
+                    ->label(__('المرحلة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('assignedUser.name')
-                    ->label('الموظف المسؤول')
+                    ->label(__('الموظف المسؤول'))
                     ->default('—'),
                 Tables\Columns\TextColumn::make('policies_count')
-                    ->label('عدد الوثائق')
+                    ->label(__('عدد الوثائق'))
                     ->counts('policies')
                     ->badge()
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('البريد الإلكتروني')
+                    ->label(__('البريد الإلكتروني'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإضافة')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->options(ClientType::class),
                 Tables\Filters\SelectFilter::make('pipeline_stage')
-                    ->label('المرحلة')
+                    ->label(__('المرحلة'))
                     ->options(PipelineStage::class),
                 Tables\Filters\SelectFilter::make('assigned_to')
-                    ->label('الموظف المسؤول')
+                    ->label(__('الموظف المسؤول'))
                     ->relationship('assignedUser', 'name'),
             ])
             ->actions([
@@ -186,5 +201,25 @@ class ClientResource extends Resource
             'view' => Pages\ViewClient::route('/{record}'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('العملاء والمبيعات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('العملاء');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('عميل');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('العملاء');
     }
 }

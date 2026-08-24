@@ -44,14 +44,17 @@ class NotifyRenewals extends Command
 
             $notification = Notification::make()
                 ->title($isExpired
-                    ? "وثيقة منتهية: {$policy->policy_number}"
-                    : "تجديد خلال {$tier} يوم: {$policy->policy_number}")
-                ->body("العميل: {$policy->client?->name} — تنتهي في {$policy->end_date->format('Y-m-d')}")
+                    ? __('وثيقة منتهية: :number', ['number' => $policy->policy_number])
+                    : __('تجديد خلال :tier يوم: :number', ['tier' => $tier, 'number' => $policy->policy_number]))
+                ->body(__('العميل: :client — تنتهي في :date', [
+                    'client' => $policy->client?->name,
+                    'date' => $policy->end_date->format('Y-m-d'),
+                ]))
                 ->icon($isExpired ? 'heroicon-o-exclamation-triangle' : 'heroicon-o-arrow-path')
                 ->color($isExpired || in_array($tier, ['7', '15'], true) ? 'danger' : 'warning')
                 ->actions([
                     Action::make('view')
-                        ->label('عرض الوثيقة')
+                        ->label(__('عرض الوثيقة'))
                         ->url(route('filament.admin.resources.policies.view', $policy))
                         ->markAsRead(),
                 ]);
@@ -64,7 +67,7 @@ class NotifyRenewals extends Command
             $notified++;
         }
 
-        $this->info("تم إرسال {$notified} إشعار تجديد.");
+        $this->info(__('تم إرسال :count إشعار تجديد.', ['count' => $notified]));
 
         return self::SUCCESS;
     }

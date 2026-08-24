@@ -32,46 +32,46 @@ class QuotationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('بيانات العرض')
+                Forms\Components\Section::make(__('بيانات العرض'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Select::make('client_id')
-                            ->label('العميل')
+                            ->label(__('العميل'))
                             ->relationship('client', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('insurance_company_id')
-                            ->label('شركة التأمين')
+                            ->label(__('شركة التأمين'))
                             ->relationship('insuranceCompany', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('coverage_type')
-                            ->label('نوع التغطية')
+                            ->label(__('نوع التغطية'))
                             ->options(PolicyType::class)
                             ->default(PolicyType::Motor)
                             ->required(),
                         Forms\Components\TextInput::make('amount')
-                            ->label('قيمة العرض (ج.م)')
+                            ->label(__('قيمة العرض (ج.م)'))
                             ->numeric()
                             ->required(),
                         Forms\Components\Select::make('status')
-                            ->label('حالة العرض')
+                            ->label(__('حالة العرض'))
                             ->options(QuotationStatus::class)
                             ->default(QuotationStatus::Sent)
                             ->required(),
                     ]),
-                Forms\Components\Section::make('المستندات والملاحظات')
+                Forms\Components\Section::make(__('المستندات والملاحظات'))
                     ->schema([
                         Forms\Components\FileUpload::make('documents')
-                            ->label('نسخة العرض (PDF)')
+                            ->label(__('نسخة العرض (PDF)'))
                             ->multiple()
                             ->directory('quotations')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات')
+                            ->label(__('ملاحظات'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -82,35 +82,35 @@ class QuotationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
-                    ->label('العميل')
+                    ->label(__('العميل'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('insuranceCompany.name')
-                    ->label('شركة التأمين')
+                    ->label(__('شركة التأمين'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('coverage_type')
-                    ->label('نوع التغطية')
+                    ->label(__('نوع التغطية'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->label('القيمة')
+                    ->label(__('القيمة'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإرسال')
+                    ->label(__('تاريخ الإرسال'))
                     ->dateTime('Y-m-d')
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(QuotationStatus::class),
                 Tables\Filters\SelectFilter::make('client_id')
-                    ->label('العميل')
+                    ->label(__('العميل'))
                     ->relationship('client', 'name')
                     ->searchable(),
             ])
@@ -134,5 +134,25 @@ class QuotationResource extends Resource
             'view' => Pages\ViewQuotation::route('/{record}'),
             'edit' => Pages\EditQuotation::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('العملاء والمبيعات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('عروض الأسعار');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('عرض سعر');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('عروض الأسعار');
     }
 }

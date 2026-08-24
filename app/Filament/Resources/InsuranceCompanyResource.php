@@ -31,30 +31,30 @@ class InsuranceCompanyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('بيانات الشركة')
+                Forms\Components\Section::make(__('بيانات الشركة'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label('اسم الشركة')
+                            ->label(__('اسم الشركة'))
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('contact_person')
-                            ->label('مسؤول التواصل'),
+                            ->label(__('مسؤول التواصل')),
                         Forms\Components\TextInput::make('phone')
-                            ->label('التليفون')
+                            ->label(__('التليفون'))
                             ->tel(),
                         Forms\Components\TextInput::make('email')
-                            ->label('البريد الإلكتروني')
+                            ->label(__('البريد الإلكتروني'))
                             ->email(),
                         Forms\Components\Toggle::make('is_active')
-                            ->label('نشطة')
+                            ->label(__('نشطة'))
                             ->default(true),
                         Forms\Components\Textarea::make('address')
-                            ->label('العنوان')
+                            ->label(__('العنوان'))
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات')
+                            ->label(__('ملاحظات'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -65,40 +65,40 @@ class InsuranceCompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم الشركة')
+                    ->label(__('اسم الشركة'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('contact_person')
-                    ->label('مسؤول التواصل')
+                    ->label(__('مسؤول التواصل'))
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label('التليفون')
+                    ->label(__('التليفون'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('البريد الإلكتروني')
+                    ->label(__('البريد الإلكتروني'))
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('policies_count')
-                    ->label('عدد الوثائق')
+                    ->label(__('عدد الوثائق'))
                     ->counts('policies')
                     ->badge(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشطة')
+                    ->label(__('نشطة'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإضافة')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('الحالة')
-                    ->placeholder('الكل')
-                    ->trueLabel('نشطة')
-                    ->falseLabel('غير نشطة'),
+                    ->label(__('الحالة'))
+                    ->placeholder(__('الكل'))
+                    ->trueLabel(__('نشطة'))
+                    ->falseLabel(__('غير نشطة')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -127,5 +127,25 @@ class InsuranceCompanyResource extends Resource
             'view' => Pages\ViewInsuranceCompany::route('/{record}'),
             'edit' => Pages\EditInsuranceCompany::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('الإعدادات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('شركات التأمين');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('شركة تأمين');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('شركات التأمين');
     }
 }

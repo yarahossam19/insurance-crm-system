@@ -36,14 +36,14 @@ class ActivityLogResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('الوقت')
+                    ->label(__('الوقت'))
                     ->dateTime('Y-m-d H:i:s')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('causer.name')
-                    ->label('بواسطة')
-                    ->default('النظام'),
+                    ->label(__('بواسطة'))
+                    ->default(__('النظام')),
                 Tables\Columns\TextColumn::make('event')
-                    ->label('العملية')
+                    ->label(__('العملية'))
                     ->badge()
                     ->color(fn (?string $state) => match ($state) {
                         'created' => 'success',
@@ -52,36 +52,36 @@ class ActivityLogResource extends Resource
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (?string $state) => match ($state) {
-                        'created' => 'إضافة',
-                        'updated' => 'تعديل',
-                        'deleted' => 'حذف',
+                        'created' => __('إضافة'),
+                        'updated' => __('تعديل'),
+                        'deleted' => __('حذف'),
                         default => $state ?? '—',
                     }),
                 Tables\Columns\TextColumn::make('subject_type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->formatStateUsing(fn (?string $state) => $state ? class_basename($state) : '—'),
                 Tables\Columns\TextColumn::make('subject_id')
-                    ->label('رقم السجل'),
+                    ->label(__('رقم السجل')),
                 Tables\Columns\TextColumn::make('description')
-                    ->label('الوصف')
+                    ->label(__('الوصف'))
                     ->searchable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('event')
-                    ->label('العملية')
+                    ->label(__('العملية'))
                     ->options([
-                        'created' => 'إضافة',
-                        'updated' => 'تعديل',
-                        'deleted' => 'حذف',
+                        'created' => __('إضافة'),
+                        'updated' => __('تعديل'),
+                        'deleted' => __('حذف'),
                     ]),
                 Tables\Filters\SelectFilter::make('subject_type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->options([
-                        \App\Models\Client::class => 'عميل',
-                        \App\Models\Policy::class => 'وثيقة تأمين',
-                        \App\Models\Quotation::class => 'عرض سعر',
-                        \App\Models\Claim::class => 'مطالبة',
-                        \App\Models\InsuranceCompany::class => 'شركة تأمين',
+                        \App\Models\Client::class => __('عميل'),
+                        \App\Models\Policy::class => __('وثيقة تأمين'),
+                        \App\Models\Quotation::class => __('عرض سعر'),
+                        \App\Models\Claim::class => __('مطالبة'),
+                        \App\Models\InsuranceCompany::class => __('شركة تأمين'),
                     ]),
             ])
             ->actions([
@@ -98,5 +98,25 @@ class ActivityLogResource extends Resource
             'index' => Pages\ListActivityLogs::route('/'),
             'view' => Pages\ViewActivityLog::route('/{record}'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('الإعدادات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('سجل النشاط');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('نشاط');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('سجل النشاط');
     }
 }

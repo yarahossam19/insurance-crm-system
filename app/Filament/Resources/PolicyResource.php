@@ -53,101 +53,101 @@ class PolicyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('بيانات الوثيقة')
+                Forms\Components\Section::make(__('بيانات الوثيقة'))
                     ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('client_id')
-                            ->label('العميل')
+                            ->label(__('العميل'))
                             ->relationship('client', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('insurance_company_id')
-                            ->label('شركة التأمين')
+                            ->label(__('شركة التأمين'))
                             ->relationship('insuranceCompany', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('type')
-                            ->label('نوع التأمين')
+                            ->label(__('نوع التأمين'))
                             ->options(PolicyType::class)
                             ->default(PolicyType::Motor)
                             ->required(),
                         Forms\Components\TextInput::make('policy_number')
-                            ->label('رقم الوثيقة')
+                            ->label(__('رقم الوثيقة'))
                             ->required()
                             ->unique(ignoreRecord: true),
                         Forms\Components\DatePicker::make('start_date')
-                            ->label('تاريخ البداية')
+                            ->label(__('تاريخ البداية'))
                             ->required()
                             ->default(now()),
                         Forms\Components\DatePicker::make('end_date')
-                            ->label('تاريخ النهاية')
+                            ->label(__('تاريخ النهاية'))
                             ->required()
                             ->after('start_date')
                             ->default(now()->addYear()),
                     ]),
 
-                Forms\Components\Section::make('العمولة والتحصيل')
-                    ->description('يُحسب صافي عمولة المكتب تلقائيًا: القسط × نسبة العمولة − عمولة الموظف')
+                Forms\Components\Section::make(__('العمولة والتحصيل'))
+                    ->description(__('يُحسب صافي عمولة المكتب تلقائيًا: القسط × نسبة العمولة − عمولة الموظف'))
                     ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('premium_amount')
-                            ->label('القسط (ج.م)')
+                            ->label(__('القسط (ج.م)'))
                             ->numeric()
                             ->required()
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateCommissions($get, $set)),
                         Forms\Components\TextInput::make('commission_rate')
-                            ->label('نسبة العمولة (%)')
+                            ->label(__('نسبة العمولة (%)'))
                             ->numeric()
                             ->suffix('%')
                             ->required()
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateCommissions($get, $set)),
                         Forms\Components\TextInput::make('employee_commission_amount')
-                            ->label('عمولة الموظف (ج.م)')
+                            ->label(__('عمولة الموظف (ج.م)'))
                             ->numeric()
                             ->default(0)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (Get $get, Set $set) => self::recalculateCommissions($get, $set)),
                         Forms\Components\TextInput::make('commission_amount')
-                            ->label('قيمة العمولة (ج.م)')
+                            ->label(__('قيمة العمولة (ج.م)'))
                             ->numeric()
                             ->readOnly()
                             ->dehydrated(),
                         Forms\Components\TextInput::make('net_office_commission')
-                            ->label('صافي عمولة المكتب (ج.م)')
+                            ->label(__('صافي عمولة المكتب (ج.م)'))
                             ->numeric()
                             ->readOnly()
                             ->dehydrated(),
                     ]),
 
-                Forms\Components\Section::make('الحالة والمتابعة')
+                Forms\Components\Section::make(__('الحالة والمتابعة'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Select::make('status')
-                            ->label('حالة الوثيقة')
+                            ->label(__('حالة الوثيقة'))
                             ->options(PolicyStatus::class)
                             ->default(PolicyStatus::Active)
                             ->required(),
                         Forms\Components\Select::make('responsible_user_id')
-                            ->label('الموظف المسؤول')
+                            ->label(__('الموظف المسؤول'))
                             ->relationship('responsibleUser', 'name')
                             ->searchable()
                             ->preload(),
                     ]),
 
-                Forms\Components\Section::make('المستندات والملاحظات')
+                Forms\Components\Section::make(__('المستندات والملاحظات'))
                     ->schema([
                         Forms\Components\FileUpload::make('documents')
-                            ->label('مستندات الوثيقة')
+                            ->label(__('مستندات الوثيقة'))
                             ->multiple()
                             ->directory('policies')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات')
+                            ->label(__('ملاحظات'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -158,10 +158,10 @@ class PolicyResource extends Resource
         return $table
             ->headerActions([
                 Tables\Actions\ExportAction::make()
-                    ->label('تصدير Excel')
+                    ->label(__('تصدير Excel'))
                     ->exporter(PolicyExporter::class),
                 Tables\Actions\Action::make('exportPdf')
-                    ->label('تصدير PDF')
+                    ->label(__('تصدير PDF'))
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('gray')
                     ->action(function ($livewire) {
@@ -171,34 +171,34 @@ class PolicyResource extends Resource
 
                         return response()->streamDownload(
                             fn () => print (\Pdf::loadView('pdf.policies-report', ['policies' => $policies])->output()),
-                            'تقرير-وثائق-التأمين-'.now()->format('Y-m-d').'.pdf'
+                            __('تقرير-وثائق-التأمين-').now()->format('Y-m-d').'.pdf'
                         );
                     }),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
-                    ->label('رقم الوثيقة')
+                    ->label(__('رقم الوثيقة'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('client.name')
-                    ->label('العميل')
+                    ->label(__('العميل'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('insuranceCompany.name')
-                    ->label('شركة التأمين')
+                    ->label(__('شركة التأمين'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('تاريخ الانتهاء'))
                     ->date('Y-m-d')
                     ->sortable()
                     ->description(fn (Policy $record) => $record->status !== PolicyStatus::Cancelled
                         ? ($record->days_to_expiry >= 0
-                            ? "متبقي {$record->days_to_expiry} يوم"
-                            : 'منتهية منذ '.abs($record->days_to_expiry).' يوم')
+                            ? __('متبقي :days يوم', ['days' => $record->days_to_expiry])
+                            : __('منتهية منذ ').abs($record->days_to_expiry).__(' يوم'))
                         : null)
                     ->color(fn (Policy $record) => match (true) {
                         $record->status === PolicyStatus::Cancelled => 'gray',
@@ -208,36 +208,36 @@ class PolicyResource extends Resource
                         default => 'success',
                     }),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('premium_amount')
-                    ->label('القسط')
+                    ->label(__('القسط'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('net_office_commission')
-                    ->label('صافي العمولة')
+                    ->label(__('صافي العمولة'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->sortable()
                     ->weight('bold')
                     ->color('primary'),
                 Tables\Columns\TextColumn::make('responsibleUser.name')
-                    ->label('الموظف المسؤول')
+                    ->label(__('الموظف المسؤول'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(PolicyStatus::class),
                 Tables\Filters\SelectFilter::make('insurance_company_id')
-                    ->label('شركة التأمين')
+                    ->label(__('شركة التأمين'))
                     ->relationship('insuranceCompany', 'name'),
                 Tables\Filters\Filter::make('expiring_soon')
-                    ->label('تجديدات خلال 30 يوم')
+                    ->label(__('تجديدات خلال 30 يوم'))
                     ->query(fn (Builder $query): Builder => $query->expiringWithin(0, 30)),
                 Tables\Filters\Filter::make('expired')
-                    ->label('منتهية')
+                    ->label(__('منتهية'))
                     ->query(fn (Builder $query): Builder => $query->expired()),
             ])
             ->actions([
@@ -268,5 +268,25 @@ class PolicyResource extends Resource
             'view' => Pages\ViewPolicy::route('/{record}'),
             'edit' => Pages\EditPolicy::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('الوثائق والتجديدات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('وثائق التأمين');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('وثيقة تأمين');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('وثائق التأمين');
     }
 }

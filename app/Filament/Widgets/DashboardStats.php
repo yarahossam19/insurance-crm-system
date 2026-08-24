@@ -68,30 +68,30 @@ class DashboardStats extends BaseWidget
             : CollectionModel::whereDate('collected_at', $day)->sum('amount'));
 
         return [
-            Stat::make('إجمالي العملاء', Client::count())
-                ->description(($clientsChange >= 0 ? '+' : '').$clientsChange.'% خلال أسبوع')
+            Stat::make(__('إجمالي العملاء'), Client::count())
+                ->description(($clientsChange >= 0 ? '+' : '').$clientsChange.__('% خلال أسبوع'))
                 ->descriptionIcon($clientsChange >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->chart($clientsSeries)
                 ->icon('heroicon-o-users')
                 ->color('primary'),
-            Stat::make('الوثائق السارية', (clone $activePolicies)->count())
-                ->description(($policiesChange >= 0 ? '+' : '').$policiesChange.'% خلال أسبوع')
+            Stat::make(__('الوثائق السارية'), (clone $activePolicies)->count())
+                ->description(($policiesChange >= 0 ? '+' : '').$policiesChange.__('% خلال أسبوع'))
                 ->descriptionIcon($policiesChange >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->chart($policiesSeries)
                 ->icon('heroicon-o-document-check')
                 ->color('success'),
-            Stat::make('إجمالي الأقساط السارية', number_format((float) $totalPremiums).' ج.م')
-                ->description('اتجاه آخر 7 أيام')
+            Stat::make(__('إجمالي الأقساط السارية'), number_format((float) $totalPremiums).__(' ج.م'))
+                ->description(__('اتجاه آخر 7 أيام'))
                 ->chart($premiumsSeries)
                 ->icon('heroicon-o-banknotes')
                 ->color('gray'),
-            Stat::make('إجمالي العمولات السارية', number_format((float) $totalCommissions).' ج.م')
-                ->description('اتجاه آخر 7 أيام')
+            Stat::make(__('إجمالي العمولات السارية'), number_format((float) $totalCommissions).__(' ج.م'))
+                ->description(__('اتجاه آخر 7 أيام'))
                 ->chart($commissionsSeries)
                 ->icon('heroicon-o-currency-dollar')
                 ->color('warning'),
-            Stat::make('محصّل هذا الشهر', number_format((float) $collectedThisMonth).' ج.م')
-                ->description(($collectionsChange >= 0 ? '+' : '').$collectionsChange.'% خلال أسبوع')
+            Stat::make(__('محصّل هذا الشهر'), number_format((float) $collectedThisMonth).__(' ج.م'))
+                ->description(($collectionsChange >= 0 ? '+' : '').$collectionsChange.__('% خلال أسبوع'))
                 ->descriptionIcon($collectionsChange >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->chart($collectionsSeries)
                 ->icon('heroicon-o-arrow-trending-up')

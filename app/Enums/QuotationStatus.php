@@ -15,10 +15,10 @@ enum QuotationStatus: string implements HasColor, HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Sent => 'مرسل',
-            self::UnderReview => 'قيد المراجعة',
-            self::Accepted => 'مقبول',
-            self::Rejected => 'مرفوض',
+            self::Sent => __('مرسل'),
+            self::UnderReview => __('قيد المراجعة'),
+            self::Accepted => __('مقبول'),
+            self::Rejected => __('مرفوض'),
         };
     }
 

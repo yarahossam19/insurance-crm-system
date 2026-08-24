@@ -6,6 +6,7 @@ use App\Models\Policy;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PoliciesRelationManager extends RelationManager
 {
@@ -21,29 +22,29 @@ class PoliciesRelationManager extends RelationManager
             ->recordTitleAttribute('policy_number')
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
-                    ->label('رقم الوثيقة')
+                    ->label(__('رقم الوثيقة'))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('client.name')
-                    ->label('العميل')
+                    ->label(__('العميل'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('تاريخ الانتهاء'))
                     ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('premium_amount')
-                    ->label('القسط')
+                    ->label(__('القسط'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م'),
+                    ->suffix(__(' ج.م')),
                 Tables\Columns\TextColumn::make('net_office_commission')
-                    ->label('صافي العمولة')
+                    ->label(__('صافي العمولة'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->weight('bold')
                     ->color('primary'),
             ])
@@ -51,10 +52,20 @@ class PoliciesRelationManager extends RelationManager
             ->headerActions([])
             ->actions([
                 Tables\Actions\Action::make('view')
-                    ->label('عرض')
+                    ->label(__('عرض'))
                     ->icon('heroicon-o-eye')
                     ->url(fn (Policy $record) => route('filament.admin.resources.policies.view', $record)),
             ])
             ->bulkActions([]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('وثائق هذه الشركة');
+    }
+
+    protected static function getModelLabel(): ?string
+    {
+        return __('وثيقة');
     }
 }

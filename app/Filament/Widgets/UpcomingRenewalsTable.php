@@ -29,17 +29,17 @@ class UpcomingRenewalsTable extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('policy_number')
-                    ->label('رقم الوثيقة'),
+                    ->label(__('رقم الوثيقة')),
                 Tables\Columns\TextColumn::make('client.name')
-                    ->label('العميل'),
+                    ->label(__('العميل')),
                 Tables\Columns\TextColumn::make('insuranceCompany.name')
-                    ->label('شركة التأمين'),
+                    ->label(__('شركة التأمين')),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('تاريخ الانتهاء'))
                     ->date('Y-m-d')
                     ->description(fn (Policy $record) => $record->days_to_expiry >= 0
-                        ? "متبقي {$record->days_to_expiry} يوم"
-                        : 'منتهية منذ '.abs($record->days_to_expiry).' يوم')
+                        ? __('متبقي :days يوم', ['days' => $record->days_to_expiry])
+                        : __('منتهية منذ ').abs($record->days_to_expiry).__(' يوم'))
                     ->color(fn (Policy $record) => match (true) {
                         $record->days_to_expiry < 0 => 'danger',
                         $record->days_to_expiry <= 15 => 'danger',
@@ -47,15 +47,20 @@ class UpcomingRenewalsTable extends BaseWidget
                         default => 'success',
                     }),
                 Tables\Columns\TextColumn::make('responsibleUser.name')
-                    ->label('الموظف المسؤول')
+                    ->label(__('الموظف المسؤول'))
                     ->default('—'),
             ])
             ->actions([
                 Tables\Actions\Action::make('view')
-                    ->label('عرض')
+                    ->label(__('عرض'))
                     ->url(fn (Policy $record) => route('filament.admin.resources.policies.view', $record))
                     ->icon('heroicon-o-eye'),
             ])
             ->paginated(false);
+    }
+
+    protected function getTableHeading(): string
+    {
+        return __('أقرب التجديدات');
     }
 }

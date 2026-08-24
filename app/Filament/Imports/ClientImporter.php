@@ -16,29 +16,29 @@ class ClientImporter extends Importer
     {
         return [
             ImportColumn::make('name')
-                ->label('الاسم')
+                ->label(__('الاسم'))
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('type')
-                ->label('النوع (individual/company)')
+                ->label(__('النوع (individual/company)'))
                 ->rules(['nullable', 'in:individual,company']),
             ImportColumn::make('phone')
-                ->label('التليفون')
+                ->label(__('التليفون'))
                 ->rules(['nullable', 'max:50']),
             ImportColumn::make('email')
-                ->label('البريد الإلكتروني')
+                ->label(__('البريد الإلكتروني'))
                 ->rules(['nullable', 'email', 'max:255']),
             ImportColumn::make('national_id')
-                ->label('الرقم القومي')
+                ->label(__('الرقم القومي'))
                 ->rules(['nullable', 'max:50']),
             ImportColumn::make('commercial_register')
-                ->label('السجل التجاري')
+                ->label(__('السجل التجاري'))
                 ->rules(['nullable', 'max:50']),
             ImportColumn::make('address')
-                ->label('العنوان')
+                ->label(__('العنوان'))
                 ->rules(['nullable']),
             ImportColumn::make('notes')
-                ->label('ملاحظات')
+                ->label(__('ملاحظات'))
                 ->rules(['nullable']),
         ];
     }
@@ -68,10 +68,10 @@ class ClientImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'تم استيراد '.number_format($import->successful_rows).' سجل بنجاح.';
+        $body = __('تم استيراد ').number_format($import->successful_rows).__(' سجل بنجاح.');
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' فشل استيراد '.number_format($failedRowsCount).' سجل.';
+            $body .= __(' فشل استيراد ').number_format($failedRowsCount).__(' سجل.');
         }
 
         return $body;

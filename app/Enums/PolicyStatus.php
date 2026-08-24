@@ -15,10 +15,10 @@ enum PolicyStatus: string implements HasColor, HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Active => 'سارية',
-            self::PendingRenewal => 'قيد التجديد',
-            self::Expired => 'منتهية',
-            self::Cancelled => 'ملغاة',
+            self::Active => __('سارية'),
+            self::PendingRenewal => __('قيد التجديد'),
+            self::Expired => __('منتهية'),
+            self::Cancelled => __('ملغاة'),
         };
     }
 

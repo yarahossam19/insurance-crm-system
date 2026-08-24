@@ -26,25 +26,30 @@ class CompanyPerformanceTable extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('شركة التأمين')
+                    ->label(__('شركة التأمين'))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('policies_count')
-                    ->label('عدد الوثائق')
+                    ->label(__('عدد الوثائق'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('premiums_sum')
-                    ->label('إجمالي الأقساط')
+                    ->label(__('إجمالي الأقساط'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->default(0),
                 Tables\Columns\TextColumn::make('commissions_sum')
-                    ->label('إجمالي العمولات')
+                    ->label(__('إجمالي العمولات'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->default(0)
                     ->weight('bold')
                     ->color('primary'),
             ])
             ->defaultSort('commissions_sum', 'desc')
             ->paginated(false);
+    }
+
+    protected function getTableHeading(): string
+    {
+        return __('أداء شركات التأمين');
     }
 }

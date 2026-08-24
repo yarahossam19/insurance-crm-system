@@ -8,6 +8,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class CollectionsRelationManager extends RelationManager
 {
@@ -22,15 +23,15 @@ class CollectionsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('amount')
-                    ->label('المبلغ المحصّل (ج.م)')
+                    ->label(__('المبلغ المحصّل (ج.م)'))
                     ->numeric()
                     ->required(),
                 Forms\Components\DatePicker::make('collected_at')
-                    ->label('تاريخ التحصيل')
+                    ->label(__('تاريخ التحصيل'))
                     ->required()
                     ->default(now()),
                 Forms\Components\Textarea::make('notes')
-                    ->label('ملاحظات')
+                    ->label(__('ملاحظات'))
                     ->columnSpanFull(),
             ]);
     }
@@ -41,22 +42,22 @@ class CollectionsRelationManager extends RelationManager
             ->recordTitleAttribute('amount')
             ->columns([
                 Tables\Columns\TextColumn::make('amount')
-                    ->label('المبلغ')
+                    ->label(__('المبلغ'))
                     ->numeric(decimalPlaces: 2)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('collected_at')
-                    ->label('تاريخ التحصيل')
+                    ->label(__('تاريخ التحصيل'))
                     ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('collector.name')
-                    ->label('بواسطة')
+                    ->label(__('بواسطة'))
                     ->default('—'),
             ])
             ->defaultSort('collected_at', 'desc')
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('تسجيل تحصيل')
+                    ->label(__('تسجيل تحصيل'))
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['collected_by'] = Auth::id();
 
@@ -72,5 +73,15 @@ class CollectionsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('التحصيلات');
+    }
+
+    protected static function getModelLabel(): ?string
+    {
+        return __('تحصيل');
     }
 }

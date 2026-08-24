@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\DashboardStats;
+use App\Filament\Widgets\EmployeePerformanceTable;
+use App\Filament\Widgets\PendingFollowUpsTable;
 use App\Filament\Widgets\PipelineFunnelChart;
 use App\Filament\Widgets\PolicyTypeChart;
 use App\Filament\Widgets\RenewalStatsOverview;
@@ -28,6 +30,8 @@ class Dashboard extends BaseDashboard
             PipelineFunnelChart::class,
             RenewalStatsOverview::class,
             UpcomingRenewalsTable::class,
+            PendingFollowUpsTable::class,
+            EmployeePerformanceTable::class,
         ];
     }
 }

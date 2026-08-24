@@ -32,18 +32,18 @@ class ClaimResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('بيانات المطالبة')
+                Forms\Components\Section::make(__('بيانات المطالبة'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Select::make('client_id')
-                            ->label('العميل')
+                            ->label(__('العميل'))
                             ->relationship('client', 'name')
                             ->searchable()
                             ->preload()
                             ->live()
                             ->required(),
                         Forms\Components\Select::make('policy_id')
-                            ->label('الوثيقة')
+                            ->label(__('الوثيقة'))
                             ->relationship(
                                 'policy',
                                 'policy_number',
@@ -55,38 +55,38 @@ class ClaimResource extends Resource
                             ->preload()
                             ->required(),
                         Forms\Components\TextInput::make('claim_number')
-                            ->label('رقم المطالبة')
+                            ->label(__('رقم المطالبة'))
                             ->required()
                             ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('claim_type')
-                            ->label('نوع المطالبة'),
+                            ->label(__('نوع المطالبة')),
                         Forms\Components\TextInput::make('claimed_amount')
-                            ->label('المبلغ المطالَب به (ج.م)')
+                            ->label(__('المبلغ المطالَب به (ج.م)'))
                             ->numeric(),
                         Forms\Components\Select::make('status')
-                            ->label('الحالة')
+                            ->label(__('الحالة'))
                             ->options(ClaimStatus::class)
                             ->default(ClaimStatus::Reported)
                             ->required(),
                         Forms\Components\Select::make('responsible_user_id')
-                            ->label('الموظف المسؤول')
+                            ->label(__('الموظف المسؤول'))
                             ->relationship('responsibleUser', 'name')
                             ->searchable()
                             ->preload(),
                         Forms\Components\Textarea::make('description')
-                            ->label('وصف المطالبة')
+                            ->label(__('وصف المطالبة'))
                             ->columnSpanFull(),
                     ]),
-                Forms\Components\Section::make('المستندات والملاحظات')
+                Forms\Components\Section::make(__('المستندات والملاحظات'))
                     ->schema([
                         Forms\Components\FileUpload::make('documents')
-                            ->label('مستندات المطالبة')
+                            ->label(__('مستندات المطالبة'))
                             ->multiple()
                             ->directory('claims')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات')
+                            ->label(__('ملاحظات'))
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -97,40 +97,40 @@ class ClaimResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('claim_number')
-                    ->label('رقم المطالبة')
+                    ->label(__('رقم المطالبة'))
                     ->searchable()
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('client.name')
-                    ->label('العميل')
+                    ->label(__('العميل'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('policy.policy_number')
-                    ->label('الوثيقة')
+                    ->label(__('الوثيقة'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('policy.insuranceCompany.name')
-                    ->label('شركة التأمين'),
+                    ->label(__('شركة التأمين')),
                 Tables\Columns\TextColumn::make('claim_type')
-                    ->label('النوع')
+                    ->label(__('النوع'))
                     ->default('—'),
                 Tables\Columns\TextColumn::make('claimed_amount')
-                    ->label('المبلغ')
+                    ->label(__('المبلغ'))
                     ->numeric(decimalPlaces: 0)
-                    ->suffix(' ج.م')
+                    ->suffix(__(' ج.م'))
                     ->placeholder('—'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('responsibleUser.name')
-                    ->label('الموظف المسؤول')
+                    ->label(__('الموظف المسؤول'))
                     ->default('—')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ التسجيل')
+                    ->label(__('تاريخ التسجيل'))
                     ->dateTime('Y-m-d')
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('الحالة')
+                    ->label(__('الحالة'))
                     ->options(ClaimStatus::class),
             ])
             ->actions([
@@ -160,5 +160,25 @@ class ClaimResource extends Resource
             'view' => Pages\ViewClaim::route('/{record}'),
             'edit' => Pages\EditClaim::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('الوثائق والتجديدات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('المطالبات');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('مطالبة');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('المطالبات');
     }
 }

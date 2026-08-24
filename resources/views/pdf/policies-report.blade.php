@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" lang="{{ app()->getLocale() }}">
 <head>
 <meta charset="utf-8">
-<title>تقرير وثائق التأمين</title>
+<title>{{ __('تقرير وثائق التأمين') }}</title>
 <style>
-    body { font-family: 'DejaVu Sans', sans-serif; direction: rtl; text-align: right; color: #10202B; font-size: 12px; }
+    body { font-family: 'DejaVu Sans', sans-serif; direction: {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}; text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }}; color: #10202B; font-size: 12px; }
     .header { border-bottom: 2px solid #3C9284; padding-bottom: 10px; margin-bottom: 18px; }
     .header .brand { font-size: 18px; font-weight: bold; color: #3C9284; }
     .header .meta { font-size: 10px; color: #7C8A92; margin-top: 4px; }
     h1 { font-size: 16px; color: #10202B; margin: 0 0 14px 0; }
     table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    th { background: #E7ECE6; color: #45525C; font-size: 10px; padding: 7px 6px; text-align: right; border-bottom: 1px solid #DAE0D8; }
+    th { background: #E7ECE6; color: #45525C; font-size: 10px; padding: 7px 6px; text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }}; border-bottom: 1px solid #DAE0D8; }
     td { padding: 7px 6px; font-size: 10.5px; border-bottom: 1px solid #DAE0D8; }
     tfoot td { font-weight: bold; background: #F1F3EF; }
     .muted { color: #7C8A92; font-size: 10px; }
@@ -20,22 +20,22 @@
 <body>
     <div class="header">
         <div class="brand">عبدالله الشباسي للتأمين</div>
-        <div class="meta">تاريخ الإصدار: {{ now()->format('Y-m-d H:i') }} — عدد الوثائق: {{ $policies->count() }}</div>
+        <div class="meta">{{ __('تاريخ الإصدار') }}: {{ now()->format('Y-m-d H:i') }} — {{ __('عدد الوثائق') }}: {{ $policies->count() }}</div>
     </div>
 
-    <h1>تقرير وثائق التأمين</h1>
+    <h1>{{ __('تقرير وثائق التأمين') }}</h1>
 
     <table>
         <thead>
             <tr>
-                <th>رقم الوثيقة</th>
-                <th>العميل</th>
-                <th>شركة التأمين</th>
-                <th>النوع</th>
-                <th>تاريخ الانتهاء</th>
-                <th>الحالة</th>
-                <th>القسط</th>
-                <th>صافي العمولة</th>
+                <th>{{ __('رقم الوثيقة') }}</th>
+                <th>{{ __('العميل') }}</th>
+                <th>{{ __('شركة التأمين') }}</th>
+                <th>{{ __('النوع') }}</th>
+                <th>{{ __('تاريخ الانتهاء') }}</th>
+                <th>{{ __('الحالة') }}</th>
+                <th>{{ __('القسط') }}</th>
+                <th>{{ __('صافي العمولة') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -47,20 +47,20 @@
                     <td>{{ $policy->type?->getLabel() }}</td>
                     <td>{{ $policy->end_date->format('Y-m-d') }}</td>
                     <td>{{ $policy->status?->getLabel() }}</td>
-                    <td>{{ number_format((float) $policy->premium_amount) }} ج.م</td>
-                    <td>{{ number_format((float) $policy->net_office_commission) }} ج.م</td>
+                    <td>{{ number_format((float) $policy->premium_amount) }}{{ __(' ج.م') }}</td>
+                    <td>{{ number_format((float) $policy->net_office_commission) }}{{ __(' ج.م') }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6">الإجمالي</td>
-                <td>{{ number_format((float) $policies->sum('premium_amount')) }} ج.م</td>
-                <td>{{ number_format((float) $policies->sum('net_office_commission')) }} ج.م</td>
+                <td colspan="6">{{ __('الإجمالي') }}</td>
+                <td>{{ number_format((float) $policies->sum('premium_amount')) }}{{ __(' ج.م') }}</td>
+                <td>{{ number_format((float) $policies->sum('net_office_commission')) }}{{ __(' ج.م') }}</td>
             </tr>
         </tfoot>
     </table>
 
-    <div class="footer">تقرير آلي من نظام إدارة الوساطة التأمينية — عبدالله الشباسي للتأمين</div>
+    <div class="footer">{{ __('تقرير آلي من نظام إدارة الوساطة التأمينية') }} — عبدالله الشباسي للتأمين</div>
 </body>
 </html>

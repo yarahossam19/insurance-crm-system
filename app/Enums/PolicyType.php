@@ -17,13 +17,13 @@ enum PolicyType: string implements HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Motor => 'تأمين سيارات',
-            self::Health => 'تأمين صحي',
-            self::Life => 'تأمين حياة',
-            self::Property => 'تأمين ممتلكات',
-            self::Marine => 'تأمين بحري',
-            self::Travel => 'تأمين سفر',
-            self::Other => 'أخرى',
+            self::Motor => __('تأمين سيارات'),
+            self::Health => __('تأمين صحي'),
+            self::Life => __('تأمين حياة'),
+            self::Property => __('تأمين ممتلكات'),
+            self::Marine => __('تأمين بحري'),
+            self::Travel => __('تأمين سفر'),
+            self::Other => __('أخرى'),
         };
     }
 }

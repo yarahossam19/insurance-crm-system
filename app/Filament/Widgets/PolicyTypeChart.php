@@ -47,4 +47,9 @@ class PolicyTypeChart extends ChartWidget
     {
         return 'doughnut';
     }
+
+    public function getHeading(): string
+    {
+        return __('توزيع الوثائق حسب النوع');
+    }
 }

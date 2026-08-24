@@ -42,14 +42,14 @@
                                 <div class="mt-2 flex items-center justify-between">
                                     <x-filament::icon-button
                                         icon="heroicon-o-arrow-right"
-                                        label="مرحلة سابقة"
+                                        label="{{ __('مرحلة سابقة') }}"
                                         size="sm"
                                         wire:click="moveClient({{ $client->id }}, 'prev')"
                                     />
 
                                     <x-filament::icon-button
                                         icon="heroicon-o-arrow-left"
-                                        label="مرحلة تالية"
+                                        label="{{ __('مرحلة تالية') }}"
                                         size="sm"
                                         color="primary"
                                         wire:click="moveClient({{ $client->id }}, 'next')"
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-xs text-gray-400 py-6">لا يوجد عملاء في هذه المرحلة</p>
+                            <p class="text-center text-xs text-gray-400 py-6">{{ __('لا يوجد عملاء في هذه المرحلة') }}</p>
                         @endforelse
                     </div>
                 </x-filament::section>

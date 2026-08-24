@@ -25,33 +25,33 @@ class ViewInsuranceCompany extends ViewRecord
     {
         return $infolist
             ->schema([
-                Section::make('ملخص الأداء')
+                Section::make(__('ملخص الأداء'))
                     ->columns(3)
                     ->schema([
                         TextEntry::make('policies_count')
-                            ->label('عدد الوثائق')
+                            ->label(__('عدد الوثائق'))
                             ->state(fn (InsuranceCompany $record) => $record->policies()->count()),
                         TextEntry::make('premiums_total')
-                            ->label('إجمالي الأقساط')
-                            ->state(fn (InsuranceCompany $record) => number_format((float) $record->policies()->sum('premium_amount')).' ج.م'),
+                            ->label(__('إجمالي الأقساط'))
+                            ->state(fn (InsuranceCompany $record) => number_format((float) $record->policies()->sum('premium_amount')).__(' ج.م')),
                         TextEntry::make('commissions_total')
-                            ->label('إجمالي العمولات')
-                            ->state(fn (InsuranceCompany $record) => number_format((float) $record->policies()->sum('net_office_commission')).' ج.م')
+                            ->label(__('إجمالي العمولات'))
+                            ->state(fn (InsuranceCompany $record) => number_format((float) $record->policies()->sum('net_office_commission')).__(' ج.م'))
                             ->weight('bold')
                             ->color('primary'),
                     ]),
-                Section::make('بيانات الشركة')
+                Section::make(__('بيانات الشركة'))
                     ->columns(2)
                     ->schema([
-                        TextEntry::make('name')->label('اسم الشركة'),
-                        TextEntry::make('contact_person')->label('مسؤول التواصل')->placeholder('—'),
-                        TextEntry::make('phone')->label('التليفون')->placeholder('—'),
-                        TextEntry::make('email')->label('البريد الإلكتروني')->placeholder('—'),
-                        TextEntry::make('is_active')->label('نشطة')->badge()
-                            ->formatStateUsing(fn (bool $state) => $state ? 'نشطة' : 'غير نشطة')
+                        TextEntry::make('name')->label(__('اسم الشركة')),
+                        TextEntry::make('contact_person')->label(__('مسؤول التواصل'))->placeholder('—'),
+                        TextEntry::make('phone')->label(__('التليفون'))->placeholder('—'),
+                        TextEntry::make('email')->label(__('البريد الإلكتروني'))->placeholder('—'),
+                        TextEntry::make('is_active')->label(__('نشطة'))->badge()
+                            ->formatStateUsing(fn (bool $state) => $state ? __('نشطة') : __('غير نشطة'))
                             ->color(fn (bool $state) => $state ? 'success' : 'gray'),
-                        TextEntry::make('address')->label('العنوان')->placeholder('—')->columnSpanFull(),
-                        TextEntry::make('notes')->label('ملاحظات')->placeholder('—')->columnSpanFull(),
+                        TextEntry::make('address')->label(__('العنوان'))->placeholder('—')->columnSpanFull(),
+                        TextEntry::make('notes')->label(__('ملاحظات'))->placeholder('—')->columnSpanFull(),
                     ]),
             ]);
     }

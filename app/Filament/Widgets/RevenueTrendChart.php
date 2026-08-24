@@ -36,7 +36,7 @@ class RevenueTrendChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'الأقساط',
+                    'label' => __('الأقساط'),
                     'data' => $premiums,
                     'borderColor' => '#57C0AE',
                     'backgroundColor' => 'rgba(87, 192, 174, 0.15)',
@@ -44,7 +44,7 @@ class RevenueTrendChart extends ChartWidget
                     'tension' => 0.3,
                 ],
                 [
-                    'label' => 'صافي العمولات',
+                    'label' => __('صافي العمولات'),
                     'data' => $commissions,
                     'borderColor' => '#D9AE68',
                     'backgroundColor' => 'rgba(217, 174, 104, 0.15)',
@@ -59,5 +59,10 @@ class RevenueTrendChart extends ChartWidget
     protected function getType(): string
     {
         return 'line';
+    }
+
+    public function getHeading(): string
+    {
+        return __('الأقساط والعمولات خلال آخر 6 شهور');
     }
 }

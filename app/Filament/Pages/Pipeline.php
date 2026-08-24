@@ -49,4 +49,19 @@ class Pipeline extends Page
 
         $client->update(['pipeline_stage' => $stages[$newIndex]->value]);
     }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('العملاء والمبيعات');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('مسار المتابعة (Pipeline)');
+    }
+
+    public function getTitle(): string
+    {
+        return __('مسار متابعة العملاء');
+    }
 }

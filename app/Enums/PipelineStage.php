@@ -20,14 +20,14 @@ enum PipelineStage: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::NewLead => 'عميل محتمل جديد',
-            self::Contacted => 'تم التواصل',
-            self::Quotation => 'عرض سعر',
-            self::FollowUp => 'متابعة',
-            self::Approved => 'موافقة',
-            self::Issued => 'تم الإصدار',
-            self::Renewed => 'تم التجديد',
-            self::Lost => 'فاقد',
+            self::NewLead => __('عميل محتمل جديد'),
+            self::Contacted => __('تم التواصل'),
+            self::Quotation => __('عرض سعر'),
+            self::FollowUp => __('متابعة'),
+            self::Approved => __('موافقة'),
+            self::Issued => __('تم الإصدار'),
+            self::Renewed => __('تم التجديد'),
+            self::Lost => __('فاقد'),
         };
     }
 
