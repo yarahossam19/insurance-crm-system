@@ -18,7 +18,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="brand">عبدالله الشباسي للتأمين</div>
+        <div class="brand">IGIB</div>
         <div class="meta">{{ __('تاريخ الإصدار') }}: {{ now()->format('Y-m-d H:i') }}</div>
     </div>
 
@@ -68,6 +68,6 @@
         </tbody>
     </table>
 
-    <div class="footer">{{ __('تقرير آلي من نظام إدارة الوساطة التأمينية') }} — عبدالله الشباسي للتأمين</div>
+    <div class="footer">{{ __('تقرير آلي من نظام إدارة الوساطة التأمينية') }} — IGIB للتأمين</div>
 </body>
 </html>

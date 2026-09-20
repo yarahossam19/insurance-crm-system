@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('عبدالله الشباسي للتأمين')
+            ->brandName('IGIB')
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.svg'))
             ->databaseNotifications()
